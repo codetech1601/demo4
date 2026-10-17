@@ -30,7 +30,9 @@ steps:
     jdkVersionOption: 1.17
     mavenVersionOption: 'Default'
   
-
+- script: |
+   docker build -t demo-app:$(Build.BuildId) -f demo/Dockerfile demo
+  displayName: 'Build Docker Image'
 
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
