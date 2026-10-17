@@ -1,0 +1,44 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+ branches:
+   include:
+     - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: JavaToolInstaller@0
+  displayName: 'Install Java 17'
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+  
+
+- script: |
+   chmod +x ./demo/mvnw ./demo/mvnw -f ./demo/pom.xml clean verify
+  displayName: 'Build and Test Java Project'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)/demo'
+    failTaskOnFailedTests: false
+    testRunTitle: 'Java Unit Tests'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifact'
+  condition: succeeded()
+  inputs:
+   PathtoPublish: 'demo/target'
+   ArtifactName: 'JavaApplication'
+   publishLocation: 'Container'
+
