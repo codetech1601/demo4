@@ -19,10 +19,18 @@ steps:
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
   
-
-- script: |
-   chmod +x ./demo/mvnw ./demo/mvnw -f ./demo/pom.xml clean verify
+- task: Maven@4
   displayName: 'Build and Test Java Project'
+  inputs:
+    mavenPomFile: 'demo/pom.xml'
+    goals: 'clean verify'
+    publishJUnitResults: true 
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: JDKVersion
+    jdkVersionOption: 1.17
+    mavenVersionOption: 'Default'
+  
+
 
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
