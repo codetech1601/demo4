@@ -12,4 +12,9 @@ public class demoController {
         return "Hello from Codespaces!";
     }
 
+     @GetMapping("/helloWorld")
+    public String sayHelloWorld() {
+        return "Hello World!";
+    }
+
 }
