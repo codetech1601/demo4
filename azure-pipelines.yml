@@ -67,3 +67,15 @@ steps:
    ArtifactName: 'JavaApplication'
    publishLocation: 'Container'
 
+- task: AzureCLI@2
+  displayName: 'Deploy latest image to DEV'
+  inputs:
+    azureSubscription: 'sc-azure-containerapps'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+     set -e 
+     echo "Deploying Docker image to DEV..."
+     az extension add --name containerapp --upgrade
+     az containerapp update --name demo-dev --resource-group rg-demo-app --image ghcr.io/codetech1601/demo-app:$(Build.BuildId)
+     echo "DEV deployment command completed..."
