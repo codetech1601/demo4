@@ -22,4 +22,10 @@ public class demoController {
         return "Hi this is my first api";
     }
 
+      @GetMapping("/hellohi")
+    public String sayHelloHi() {
+        return "Welcome to argos";
+    }
+
+
 }
