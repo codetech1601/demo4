@@ -34,6 +34,21 @@ steps:
    docker build -t demo-app:$(Build.BuildId) -f demo/Dockerfile demo
   displayName: 'Build Docker Image'
 
+- script: |
+   set -e
+   echo "Logging into GitHub Container Registry..."
+   echo "$GHCR_TOKEN" | docker login ghcr.io -u codetech1601 --password-stdin
+   echo "Tagging Docker image"
+   docker tag demo-app:$(Build.BuildId) ghcr.io/codetech1601/demo-app:$(Build.BuildId)
+   echo "Pushing Docker image to GHCR"
+   docker push ghcr.io/codetech1601/demo-app:$(Build.BuildId)
+   echo "Logging out from GHCR"
+   docker logout ghcr.io
+   echo "Docker image successfully published!"
+  displayName: "Push Docker Image to GHCR"
+  env:
+    GHCR_TOKEN: $(GHCR_TOKEN)
+
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
   condition: succeededOrFailed()
