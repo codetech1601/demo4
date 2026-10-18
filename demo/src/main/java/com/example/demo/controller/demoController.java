@@ -17,4 +17,9 @@ public class demoController {
         return "Hello World!";
     }
 
+     @GetMapping("/hi")
+    public String sayHi() {
+        return "Hi this is my first api";
+    }
+
 }
