@@ -27,5 +27,8 @@ public class demoController {
         return "Welcome to argos";
     }
 
-
+ @GetMapping("/gm")
+    public String saygm() {
+        return "good morning from argos";
+    }
 }
